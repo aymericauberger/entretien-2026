@@ -17,14 +17,16 @@ class ExportContacts implements ShouldQueue
 
         $file->write(['name', 'email', 'phone', 'tags']);
 
-        Contact::chunk(500, function ($contact) use ($file) {
-            $file->write([
-                $contact->name,
-                $contact->email,
-                $contact->phone,
-                $contact->tags->pluck('name')->implode(', '),
-            ]);
-        });
+        Contact::query()
+            ->orderByDesc('created_at')
+            ->chunk(500, function ($contact) use ($file) {
+                $file->write([
+                    $contact->name,
+                    $contact->email,
+                    $contact->phone,
+                    $contact->tags->pluck('name')->implode(', '),
+                ]);
+            });
 
         $file->save();
     }
