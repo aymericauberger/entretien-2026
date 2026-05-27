@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use Database\Factories\ContactFactory;
+use Database\Factories\TagFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Contact extends Model
+class Tag extends Model
 {
-    /** @use HasFactory<ContactFactory> */
+    /** @use HasFactory<TagFactory> */
     use HasFactory;
 
     /**
@@ -17,12 +17,10 @@ class Contact extends Model
      */
     protected $fillable = [
         'name',
-        'email',
-        'phone',
     ];
 
-    public function tags(): BelongsToMany
+    public function contacts(): BelongsToMany
     {
-        return $this->belongsToMany(Tag::class)->withTimestamps();
+        return $this->belongsToMany(Contact::class)->withTimestamps();
     }
 }
