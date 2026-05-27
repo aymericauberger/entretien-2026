@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Domain\Imports;
+namespace App\Services;
+
+use App\Models\Import;
 
 class FileService
 {
-    /**
-     * @return array<int, array{name: string, email: string, phone: string|null}>
-     */
-    public function contacts(): array
+    public function getLines(Import $import): array
     {
         return [
             [

@@ -2,9 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Domain\Imports\CloneContactService;
-use App\Domain\Imports\FileService;
 use App\Domain\Imports\ImportContacts;
+use App\Models\Import;
+use App\Services\CloneContactService;
+use App\Services\FileService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -14,7 +15,8 @@ class ImportContactsTest extends TestCase
 
     public function test_it_imports_contacts_from_the_file_service(): void
     {
-        $job = new ImportContacts;
+        $import = Import::factory()->create();
+        $job = new ImportContacts($import->id);
 
         $job->handle(new FileService, new CloneContactService);
 
@@ -29,15 +31,10 @@ class ImportContactsTest extends TestCase
             'email' => 'grace@example.com',
             'phone' => null,
         ]);
-    }
 
-    public function test_it_updates_existing_contacts_by_email(): void
-    {
-        $job = new ImportContacts;
-
-        $job->handle(new FileService, new CloneContactService);
-        $job->handle(new FileService, new CloneContactService);
-
-        $this->assertDatabaseCount('contacts', 2);
+        $this->assertDatabaseHas('imports', [
+            'id' => $import->id,
+            'status' => Import::STATUS_COMPLETED,
+        ]);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Imports;
+namespace App\Services;
 
 use App\Models\Contact;
 
