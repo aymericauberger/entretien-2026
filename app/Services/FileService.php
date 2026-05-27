@@ -21,4 +21,19 @@ class FileService
             ],
         ];
     }
+
+    public function init()
+    {
+        //
+    }
+
+    public function write(array $row)
+    {
+        //
+    }
+
+    public function save()
+    {
+        //
+    }
 }
